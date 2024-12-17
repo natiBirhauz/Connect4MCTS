@@ -39,7 +39,7 @@ class MCTSNode:
         """Backpropagates the result of a simulation."""
         self.visits += 1
         if result == self.game_state.player:
-            self.wins += 1
+            self.wins =self.wins+3-self.visits
         elif result == 0:  # Draw
             self.wins += 0.5
         if self.parent:

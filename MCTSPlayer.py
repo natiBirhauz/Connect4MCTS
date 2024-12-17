@@ -1,6 +1,5 @@
-import ConnectFour
-import MCTSNode
-import math
+from ConnectFour import ConnectFour
+from MCTSNode import MCTSNode
 import random
 
 class MCTSPlayer:
