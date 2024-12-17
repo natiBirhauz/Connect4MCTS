@@ -60,7 +60,7 @@ class ConnectFour:
         # Directions: (dx, dy) pairs for all 4 possible win directions
         directions = [(1, 0), (0, 1), (1, 1), (1, -1)]   
         for dx, dy in directions:
-            count = 0
+            count = 1
             x, y = col + dx, row + dy
             while 0 <= x < 7 and 0 <= y < 6 and self.board[x][y] == player:
                 count += 1
@@ -71,7 +71,7 @@ class ConnectFour:
                 count += 1
                 x -= dx
                 y -= dy
-            if count >= 3:
+            if count >=4:
                 return True
         return False
 

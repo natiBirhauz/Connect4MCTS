@@ -7,6 +7,7 @@ class MCTSPlayer:
         self.iterations = iterations
 
     def choose_move(self, game):
+        
         """Uses MCTS to select the best move for the current player."""
         root = MCTSNode(game)
 
