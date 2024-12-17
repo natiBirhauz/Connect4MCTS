@@ -1,3 +1,6 @@
+from MCTSPlayer import MCTSPlayer
+from MCTSNode import MCTSNode
+
 class ConnectFour:
 
     # Some constants that I want to use to fill the board.
@@ -60,7 +63,7 @@ class ConnectFour:
         # Directions: (dx, dy) pairs for all 4 possible win directions
         directions = [(1, 0), (0, 1), (1, 1), (1, -1)]   
         for dx, dy in directions:
-            count = 1
+            count = 1 #count the current move also
             x, y = col + dx, row + dy
             while 0 <= x < 7 and 0 <= y < 6 and self.board[x][y] == player:
                 count += 1
@@ -102,21 +105,53 @@ def main():
     game = ConnectFour()
 
     print("Welcome to Connect Four!")
-    print("Player 1 is RED (R) and Player 2 is YELLOW (Y).\n")
+    choice=int (input("press 1 for PVP press 2 for PVE"))
+    if choice==1:
+        print("Player 1 is RED (R) and Player 2 is YELLOW (Y).\n")
+
+        while game.status == game.ONGOING:
+            print(game)
+            print("\nCurrent Player:", "RED" if game.player == game.RED else "YELLOW")
+            try:
+                move = int(input("Enter a column (0-6): "))
+                if move not in game.legal_moves():
+                    print("Illegal move. Try again.")
+                    continue
+                game.make(move)
+            except ValueError:
+                print("Invalid input. Enter a number between 0 and 6.")
+            except IndexError:
+                print("Move out of bounds. Try again.")
+
+        print(game)
+        if game.status == game.RED:
+            print("\nRED (Player 1) wins!")
+        elif game.status == game.YELLOW:
+            print("\nYELLOW (Player 2) wins!")
+        else:
+            print("\nIt's a draw!")
+    if choice==2:
+         mcts_player = MCTSPlayer(iterations=1000)
+         print("Player 1 is RED (R) and Player 2 is YELLOW (Y).\n")
 
     while game.status == game.ONGOING:
         print(game)
         print("\nCurrent Player:", "RED" if game.player == game.RED else "YELLOW")
-        try:
-            move = int(input("Enter a column (0-6): "))
-            if move not in game.legal_moves():
-                print("Illegal move. Try again.")
-                continue
+        
+        if game.player == game.RED:  # Human Player
+            try:
+                move = int(input("Enter a column (0-6): "))
+                if move not in game.legal_moves():
+                    print("Illegal move. Try again.")
+                    continue
+                game.make(move)
+            except ValueError:
+                print("Invalid input. Enter a number between 0 and 6.")
+        else:  # MCTS AI Player
+            print("AI is thinking...")
+            move = mcts_player.choose_move(game)
+            print(f"AI chose column {move}")
             game.make(move)
-        except ValueError:
-            print("Invalid input. Enter a number between 0 and 6.")
-        except IndexError:
-            print("Move out of bounds. Try again.")
 
     print(game)
     if game.status == game.RED:
